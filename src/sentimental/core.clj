@@ -2,8 +2,8 @@
 	(gen-class)
 	(:import [snowball-stemmer])
 	(:use [stemmer.snowball]
-		  [opennlp.nlp]
-		  [clojure.java.io]))
+		  	[opennlp.nlp]
+		  	[clojure.java.io]))
 
 
 (def eng-stemmer (stemmer "english"))
