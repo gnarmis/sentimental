@@ -1,14 +1,20 @@
 (ns sentimental.train
 	(:require [clojure.string :as string])
 	(:use [opennlp.nlp]
+        [opennlp.tools.train]
         [cheshire.core]
         [clojure.pprint]
         [clojure.java.io]))
 
-(def temp-corpus
-	(sentimental.core/get-lines "src/subjectivity_lexicon.tff"))
+(def tokenizer (make-tokenizer "src/models/en-token.bin"))
+(def senti-model (train-document-categorization "src/models/sentiment.train"))
 
-;(def eg1 (sentimental.core/tokenizer (first temp-corpus)))
+(defn get-lines [fname]
+  (with-open [r (reader fname)]
+    (doall (line-seq r))))
+
+(defn temp-corpus []
+	(get-lines "src/subjectivity_lexicon.tff"))
 
 (defn create-hashmap [l]
 	(let [a (map #(string/split % #"=") l)
@@ -18,16 +24,15 @@
         b))
 
 (defn process [s]
-	(create-hashmap (sentimental.core/tokenizer s)))
+	(create-hashmap (tokenizer s)))
 
-(def corpus (vec (map process temp-corpus)))
+(defn corpus [] 
+  (vec (map process (temp-corpus))))
 
 
 (defn stemmed-only [col]
 	(filter (fn [h] (= (:stemmed1 h) "y"))
 			    col))
-
-;(pprint stemmed-only)
 
 (defn by-subj 
   "filter by subject, such as strongsubj, weaksubj"
@@ -55,11 +60,17 @@
 
 (defn append-all-to-file [subj type]
   (map  (fn [h] (append-to-file (create-train-str h)
-                                "src/sentiment.train"))
-        (by-type (by-subj (stemmed-only corpus) 
+                                "src/models/sentiment.train"))
+        (by-type (by-subj (stemmed-only (corpus)) 
                           subj)
                   type)))
 
+; (append-all-to-file "strongsubj" "positive")
+; (append-all-to-file "weaksubj" "positive")
+; (append-all-to-file "strongsubj" "negative")
+; (append-all-to-file "weaksubj" "negative")
+; (append-all-to-file "strongsubj" "neutral")
+; (append-all-to-file "weaksubj" "neutral")
 
 
 
