@@ -1,6 +1,6 @@
 # sentimental
 
-A basic sentiment analyzer, based on clojure-opennlp and using the subjectivity lexicon. Check out the training file in `src/models/sentiment.train`. Also, the subjectivity lexicon parsed into JSON is provided under `src/parsed_lexicon.json`.
+A basic sentiment analyzer, based on clojure-opennlp and using the [subjectivity lexicon](http://www.cs.pitt.edu/mpqa/subj_lexicon.html). Check out the training file in `src/models/sentiment.train`. Also, the subjectivity lexicon parsed into JSON is provided under `src/parsed_lexicon.json`.
 
 ## Usage
 
