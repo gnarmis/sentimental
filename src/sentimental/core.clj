@@ -13,7 +13,7 @@
 (def categorize (make-document-categorizer tr/senti-model))
 
 (defn stop-words []
-	(set (sentimental.train/get-lines "src/stop_words.txt")))
+	(set (sentimental.train/get-lines "resources/stop_words.txt")))
 
 (defn strip-stop-words [l]
 	(filter (fn [x] (not (contains? (stop-words) x)))

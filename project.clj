@@ -5,5 +5,4 @@
                  [clojure-opennlp "0.1.10"]
                  [org.clojars.gnarmis/snowball-stemmer "0.1.1-SNAPSHOT"]
                  [cheshire "4.0.0"]]
-  :main sentimental.core
-  :aot  [sentimental.core])
+  :main sentimental.core)

@@ -14,7 +14,7 @@
     (doall (line-seq r))))
 
 (defn temp-corpus []
-	(get-lines "src/subjectivity_lexicon.tff"))
+	(get-lines "resources/subjectivity_lexicon.tff"))
 
 (defn create-hashmap [l]
 	(let [a (map #(string/split % #"=") l)
@@ -58,10 +58,17 @@
   (with-open [wrtr (writer f :append true)]
     (.write wrtr s)))
 
-(defn append-all-to-file [subj type]
+(defn append-stemmed-to-file [subj type]
   (map  (fn [h] (append-to-file (create-train-str h)
                                 "src/models/sentiment.train"))
         (by-type (by-subj (stemmed-only (corpus)) 
+                          subj)
+                  type)))
+
+(defn append-all-to-file [subj type]
+  (map  (fn [h] (append-to-file (create-train-str h)
+                                "src/models/sentiment.train"))
+        (by-type (by-subj (corpus) 
                           subj)
                   type)))
 
